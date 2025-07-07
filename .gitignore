@@ -1,0 +1,53 @@
+# Build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code settings
+.vscode/
+
+# Rider settings
+.idea/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+
+# Logs
+*.log
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Playwright output
+playwright-report/
+test-results/
+.playwright/
+
+# Node dependencies (if Playwright uses Node for scripts or helpers)
+node_modules/
+
+# Coverage output
+coverage/
+*.lcov
+
+# Environment/config files
+.env
+*.secrets.json
+
+# Test screenshots/videos/traces (optional)
+screenshots/
+videos/
+traces/
+
+
+# Ignore everything inside .vs folder
+.vs/
