@@ -10,42 +10,26 @@ using System.Threading.Tasks;
 
 namespace PlaywrightCsharp.Tests
 {
-    internal class HomePageTest
+    internal class HomePageTest : BaseTest
     {
-        private IPlaywright _playwright;
-        private IBrowser _browser;
-        private IBrowserContext _context;
-        private IPage _page;
         private HomePage _homePage;
 
         [SetUp]
-        public async Task Init()
+        public async Task SetupTest()
         {
-            _playwright = await Playwright.CreateAsync();
-            _browser = await BrowserFactory.LaunchAsync(_playwright, browserName: "chromium", headless: false);
-            _context = await _browser.NewContextAsync();
-            _page = await _context.NewPageAsync();
-
-            _homePage = new HomePage(_page); // Plug in your page object
+            // BaseTest already initializes _page — use it directly
+            _homePage = new HomePage(_page);
+            await _homePage.NavigateAsync(); // Optional if not already navigated in constructor
         }
 
         [Test]
         public async Task VerifyHomepageFlow()
         {
-            await _homePage.NavigateAsync();
             await _homePage.ValidateTitleAsync();
-            await _homePage.ValidateGetStartedLinkAsync();
-            await _homePage.ClickGetStartedAsync();
-            await _homePage.ValidateIntroUrlAsync();
+            await _homePage.ValidateLinkAsync("A/B Testing", "/abtest");
+            await _homePage.ClickLinkAsync("A/B Testing");
+            // await _homePage.ValidateIntroUrlAsync(); // Uncomment when method is ready
         }
-
-        [TearDown]
-        public async Task Cleanup()
-        {
-            await _browser.CloseAsync();
-            _playwright.Dispose();
-        }
-
 
     }
 }

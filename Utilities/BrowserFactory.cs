@@ -9,15 +9,26 @@ namespace PlaywrightCsharp.Utilities
 {
     internal class BrowserFactory
     {
-        public static async Task<IBrowser> LaunchAsync(IPlaywright playwright, string browserName = "chromium", bool headless = false)
+       public static async Task<IBrowser> LaunchAsync(
+       IPlaywright playwright,
+       string browserName = "chromium",
+       bool headless = false,
+       string[]? args = null)
         {
-            return browserName.ToLower() switch
+            var launchOptions = new BrowserTypeLaunchOptions
             {
-                "chromium" => await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = headless }),
-                "firefox" => await playwright.Firefox.LaunchAsync(new BrowserTypeLaunchOptions { Headless = headless }),
-                "webkit" => await playwright.Webkit.LaunchAsync(new BrowserTypeLaunchOptions { Headless = headless }),
+                Headless = headless,
+                Args = args ?? new[] { "--start-maximized" }
+            };
+
+            IBrowser browser = browserName.ToLower() switch
+            {
+                "chromium" => await playwright.Chromium.LaunchAsync(launchOptions),
+                "firefox" => await playwright.Firefox.LaunchAsync(launchOptions),
+                "webkit" => await playwright.Webkit.LaunchAsync(launchOptions),
                 _ => throw new ArgumentException($"Unsupported browser: {browserName}")
             };
+            return browser; // Return browser for global use
         }
     }
 }

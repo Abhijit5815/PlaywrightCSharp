@@ -15,22 +15,24 @@ namespace PlaywrightCsharp.Pages
         }
         public async Task NavigateAsync()
         {
-            await _page.GotoAsync("https://playwright.dev");
+            await _page.GotoAsync("http://the-internet.herokuapp.com/");
+            await _page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshots/url.png" });
         }
 
         public async Task ValidateTitleAsync()
         {
-            await Expect(_page).ToHaveTitleAsync(new Regex("Playwright"));
+            await Expect(_page).ToHaveTitleAsync(new Regex("The Internet"));
+            await _page.ScreenshotAsync(new PageScreenshotOptions { Path = "screenshots/title.png" });
         }
-        public async Task ValidateGetStartedLinkAsync()
+        public async Task ValidateLinkAsync(string link,string href)
         {
-            var getStarted = _page.Locator("text=Get Started");
-            await Expect(getStarted).ToHaveAttributeAsync("href", "/docs/intro");
+            var getStarted = _page.Locator("text="+ link);
+            await Expect(getStarted).ToHaveAttributeAsync("href", href);
         }
 
-        public async Task ClickGetStartedAsync()
+        public async Task ClickLinkAsync(string link)
         {
-            await _page.Locator("text=Get Started").ClickAsync();
+            await _page.Locator("text="+link).ClickAsync();
         }
 
         public async Task ValidateIntroUrlAsync()
